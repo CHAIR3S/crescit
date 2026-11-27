@@ -1,0 +1,421 @@
+.hero {
+  position: relative;
+  height: 560svh;
+  background: var(--void);
+}
+
+.stage {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* ---------- Luz roja ambiental (degradados en movimiento) ---------- */
+
+.light {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.5;
+  pointer-events: none;
+}
+.light span {
+  position: absolute;
+  display: block;
+  will-change: transform;
+}
+.l1 {
+  width: 95vw;
+  height: 80vw;
+  left: -38vw;
+  bottom: -52vw;
+  background: radial-gradient(closest-side, rgba(214, 20, 38, 0.78), rgba(130, 8, 20, 0.38) 55%, transparent);
+  animation: drift1 21s ease-in-out infinite alternate;
+}
+.l2 {
+  width: 75vw;
+  height: 55vw;
+  right: -30vw;
+  top: -30vw;
+  background: radial-gradient(closest-side, rgba(150, 10, 24, 0.6), rgba(80, 4, 12, 0.25) 60%, transparent);
+  animation: drift2 27s ease-in-out infinite alternate;
+}
+.l3 {
+  width: 150vw;
+  height: 34vh;
+  left: -25vw;
+  top: 44%;
+  background: radial-gradient(50% 50% at 50% 50%, rgba(245, 43, 58, 0.34), rgba(245, 43, 58, 0.08) 55%, transparent);
+  transform: rotate(-17deg);
+  animation: sweep 17s ease-in-out infinite alternate;
+}
+@keyframes drift1 {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(14vw, -8vw, 0) scale(1.12);
+  }
+}
+@keyframes drift2 {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(-16vw, 10vw, 0) scale(0.92);
+  }
+}
+@keyframes sweep {
+  from {
+    transform: translate3d(-12vw, 6vh, 0) rotate(-17deg);
+  }
+  to {
+    transform: translate3d(14vw, -8vh, 0) rotate(-11deg);
+  }
+}
+.paused .light span,
+.paused .cueIcon {
+  animation-play-state: paused;
+}
+
+/* ---------- Rostro ---------- */
+
+.canvasWrap {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  mix-blend-mode: screen;
+  will-change: opacity;
+}
+.canvas,
+.poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.poster {
+  object-fit: cover;
+  transform: translateX(16vw);
+  transition: opacity 300ms ease;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 75% 85% at 62% 46%, transparent 45%, rgba(0, 0, 0, 0.6) 100%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 34%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.55), transparent 18%);
+}
+
+/* Luz que sube al final y continúa en la sección siguiente */
+.flood {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(130vw 75svh at 50% 100%, #7a0912 0%, rgba(122, 9, 18, 0.55) 38%, transparent 76%);
+}
+
+/* ---------- Capítulos de texto ---------- */
+
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-top: calc(var(--nav-h) + 4svh);
+  padding-bottom: 9svh;
+  display: grid;
+  grid-template: 1fr / 1fr;
+  pointer-events: none;
+}
+.ch {
+  grid-area: 1 / 1;
+  pointer-events: auto;
+}
+.ch2,
+.ch3 {
+  visibility: hidden;
+}
+.hero[data-anim="on"] .ch2,
+.hero[data-anim="on"] .ch3 {
+  visibility: visible;
+}
+
+.ch1 {
+  align-self: center;
+  justify-self: start;
+  max-width: min(46vw, 660px);
+}
+.kicker {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+  font-size: var(--fs-small);
+  font-variation-settings: "wdth" 92;
+  color: var(--silver);
+}
+.kickerStar {
+  width: 18px;
+  height: 18px;
+  color: var(--red);
+}
+.title {
+  font-size: clamp(2.6rem, 0.9rem + 4.1vw, 5.5rem);
+  text-wrap: balance;
+}
+.lead {
+  margin-top: 28px;
+  max-width: 30em;
+}
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 36px;
+}
+
+.ch2 {
+  align-self: end;
+  justify-self: start;
+  max-width: min(52vw, 820px);
+}
+.big {
+  font-size: clamp(2.1rem, 0.9rem + 3.2vw, 4.5rem);
+  text-wrap: balance;
+}
+.ch2Lead {
+  margin-top: 24px;
+  max-width: 31em;
+}
+
+.ch3 {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 24px;
+}
+.line {
+  max-width: 11.5em;
+  font-size: clamp(1.85rem, 0.9rem + 2.5vw, 3.6rem);
+}
+.lineTitle {
+  font-size: 1em;
+  text-shadow: 0 0 32px rgba(0, 0, 0, 0.85);
+}
+.lineText {
+  margin-top: 12px;
+  font-size: var(--fs-body);
+  color: var(--silver);
+  max-width: 22em;
+  text-shadow: 0 0 24px rgba(0, 0, 0, 0.9);
+}
+.lineA {
+  justify-self: start;
+}
+.lineB {
+  justify-self: end;
+  align-self: center;
+  text-align: right;
+}
+.lineB .lineText {
+  margin-left: auto;
+}
+.lineC {
+  justify-self: start;
+}
+
+/* ---------- Indicadores ---------- */
+
+.cue {
+  position: absolute;
+  z-index: 5;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--fs-micro);
+  font-variation-settings: "wdth" 92;
+  color: var(--silver);
+}
+.cueIcon {
+  width: 14px;
+  height: 14px;
+  animation: bob 2.6s var(--ease-in-out) infinite;
+}
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+
+.rail {
+  position: absolute;
+  z-index: 5;
+  right: calc(var(--gutter) * 0.5);
+  top: 32%;
+  height: 36%;
+  width: 1px;
+  background: var(--line);
+}
+.rail i {
+  position: absolute;
+  inset: 0;
+  background: var(--red);
+  transform-origin: top;
+  transform: scaleY(0);
+}
+.railStar {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 16px;
+  height: 16px;
+  margin: -8px 0 0 -8px;
+  color: var(--bone);
+}
+
+/* ---------- Movimiento reducido: composición estática ---------- */
+
+.hero[data-static="true"] {
+  height: auto;
+}
+.hero[data-static="true"] .stage {
+  position: relative;
+  height: auto;
+  min-height: 100svh;
+}
+.hero[data-static="true"] .layer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18svh;
+  padding-top: calc(var(--nav-h) + 12svh);
+  padding-inline: var(--gutter);
+}
+.hero[data-static="true"] .ch2,
+.hero[data-static="true"] .ch3 {
+  visibility: visible;
+}
+.hero[data-static="true"] .ch3 {
+  gap: 64px;
+}
+.hero[data-static="true"] .canvasWrap {
+  position: absolute;
+  height: 100svh;
+}
+.hero[data-static="true"] .rail,
+.hero[data-static="true"] .cue {
+  display: none;
+}
+
+/* ---------- Tablet ---------- */
+
+@media (max-width: 1024px) {
+  .ch1 {
+    max-width: min(58vw, 560px);
+  }
+  .ch2 {
+    max-width: 70vw;
+  }
+  .rail {
+    display: none;
+  }
+}
+
+/* ---------- Móvil: rostro arriba, relato abajo ---------- */
+
+@media (max-width: 767px) {
+  .hero {
+    height: 470svh;
+  }
+  .poster {
+    inset: auto;
+    left: 50%;
+    width: max(155vw, 68svh);
+    height: max(155vw, 68svh);
+    top: calc(38svh - 0.42 * max(155vw, 68svh));
+    transform: translateX(-50%);
+  }
+  .shade {
+    background:
+      linear-gradient(to top, rgba(0, 0, 0, 0.95) 8%, rgba(0, 0, 0, 0.72) 46%, rgba(0, 0, 0, 0.28) 60%, transparent 72%),
+      linear-gradient(to bottom, rgba(0, 0, 0, 0.6), transparent 16%);
+  }
+  .layer {
+    padding-bottom: 5svh;
+  }
+  .ch1,
+  .ch2 {
+    align-self: end;
+    max-width: none;
+  }
+  .kicker {
+    margin-bottom: 16px;
+  }
+  .title {
+    font-size: clamp(2.2rem, 1rem + 6vw, 3rem);
+  }
+  .lead {
+    margin-top: 16px;
+    font-size: 1rem;
+  }
+  .ctas {
+    flex-direction: column;
+    margin-top: 24px;
+  }
+  .ctas :global(.btn) {
+    width: 100%;
+  }
+  .big {
+    font-size: clamp(1.9rem, 1rem + 5vw, 2.6rem);
+  }
+  .ch3 {
+    grid-template-rows: 1fr auto auto auto;
+    gap: 22px;
+  }
+  .ch3::before {
+    content: "";
+  }
+  .line {
+    font-size: clamp(1.55rem, 1rem + 3.6vw, 2rem);
+    max-width: none;
+  }
+  .lineB {
+    justify-self: start;
+    text-align: left;
+  }
+  .lineB .lineText {
+    margin-left: 0;
+  }
+  .lineText {
+    margin-top: 6px;
+    font-size: 0.95rem;
+  }
+  .cue {
+    display: none;
+  }
+}
+
+@media (max-height: 700px) and (min-width: 768px) {
+  .lead {
+    margin-top: 18px;
+  }
+  .ctas {
+    margin-top: 22px;
+  }
+}

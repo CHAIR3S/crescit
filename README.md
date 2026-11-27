@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Crescit · landing page
 
-## Getting Started
-
-First, run the development server:
+Web oficial de Crescit, estudio de software a medida en España.
+Next.js 16 (App Router) + TypeScript, GSAP/ScrollTrigger para las escenas ligadas al scroll y Lenis para el desplazamiento suave.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
+npm run build && npm start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuración
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copia `.env.example` como `.env.local` y rellena lo que tengas. Nada se inventa:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Qué activa |
+| --- | --- |
+| `NEXT_PUBLIC_SITE_URL` | URL canónica, sitemap y Open Graph |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Correo visible en contacto y pie |
+| `NEXT_PUBLIC_WHATSAPP_NUMBER` | Botones de WhatsApp (contacto y resultado del diagnóstico) |
+| `RESEND_API_KEY`, `CONTACT_TO_EMAIL`, `CONTACT_FROM_EMAIL` | Envío real del formulario (`/api/contact`) |
 
-## Learn More
+Sin las variables de Resend el formulario valida, pero al enviar dice claramente que no está conectado.
 
-To learn more about Next.js, take a look at the following resources:
+## Estructura
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `src/components/Hero.tsx`: rostro 3D como secuencia de fotogramas en `<canvas>`, guiada por el scroll (`public/hero/d` escritorio 1440×810, `public/hero/m` móvil 640×640). Carga progresiva: primero 1 de cada 16 fotogramas y luego rellena.
+- `src/components/diagnosis/engine.ts`: lógica del diagnóstico (preguntas por rama, puntuación y recomendación). `Diagnosis.tsx` es la interfaz.
+- `src/components/services/*`: las tres demostraciones de servicio (web que se transforma, panel de gestión interactivo, flujo de automatización).
+- `src/components/Work.tsx`: proyectos publicados, con capturas reales en `public/work`.
+- `src/app/api/contact/route.ts`: recepción del formulario (validación, campo trampa, límite por IP, envío por Resend).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Regenerar los fotogramas del hero
 
-## Deploy on Vercel
+Se extrajeron del vídeo original en WebP (310 fotogramas en escritorio, 186 en móvil, recortados en cuadrado). Un ejemplo con ffmpeg:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+ffmpeg -i rostro.mp4 -vf "fps=30,scale=1440:-2" -c:v libwebp -quality 72 -start_number 0 public/hero/d/%03d.webp
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Los nombres empiezan en `000.webp`; si cambia el número de fotogramas, actualiza `count` en `Hero.tsx`.
+
+## Pendiente antes de publicar
+
+- Páginas de **aviso legal** (LSSI-CE) y **política de privacidad** (RGPD) con los datos de la empresa, enlazadas desde el pie y desde el aviso del formulario.
+- Configurar las variables de contacto.
+- La web no usa cookies propias ni de terceros, así que no necesita banner de cookies mientras siga así.

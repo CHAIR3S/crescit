@@ -1,0 +1,95 @@
+.problem {
+  position: relative;
+  height: 230svh;
+  /* Continúa la luz con la que termina el hero: mismo perfil, reflejado */
+  background:
+    radial-gradient(130vw 75svh at 50% 0%, #7a0912 0%, rgba(122, 9, 18, 0.55) 38%, transparent 76%),
+    var(--void);
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  display: flex;
+  align-items: center;
+}
+
+.inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(28px, 4vh, 48px);
+}
+
+.label {
+  font-size: var(--fs-small);
+  font-variation-settings: "wdth" 92;
+  font-weight: 500;
+  color: var(--silver);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.label::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: var(--red);
+}
+
+.text {
+  max-width: 20.5em;
+  font-size: clamp(1.95rem, 0.8rem + 3.45vw, 4.6rem);
+  font-variation-settings: "wdth" 114;
+  font-weight: 360;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+  text-wrap: pretty;
+}
+
+.word {
+  transition: none;
+}
+
+.hot {
+  --hot: 0;
+  position: relative;
+  color: color-mix(in srgb, var(--red-soft) calc(var(--hot) * 100%), var(--bone));
+  background-image: linear-gradient(var(--red), var(--red));
+  background-repeat: no-repeat;
+  background-position: 0 92%;
+  background-size: calc(var(--hot) * 100%) 2px;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+.foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px 48px;
+  padding-top: clamp(20px, 3vh, 36px);
+  border-top: 1px solid var(--line);
+}
+
+@property --hot {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hot {
+    --hot: 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .problem {
+    height: 200svh;
+  }
+  .foot :global(.btn) {
+    width: 100%;
+  }
+}

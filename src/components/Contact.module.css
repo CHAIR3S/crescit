@@ -1,0 +1,441 @@
+/* ---------- Contacto ----------
+   Campo de luz roja en movimiento lento (la referencia de degradados rojos),
+   el mismo lenguaje de luz del hero, aquí como cierre de la página. */
+
+.contact {
+  position: relative;
+  padding-block: clamp(110px, 16vh, 200px) clamp(96px, 13vh, 160px);
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--void);
+  border-top: 1px solid var(--line);
+}
+
+.field {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+.field span {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+}
+.g1 {
+  width: 90vw;
+  height: 90vw;
+  left: -30vw;
+  bottom: -55vw;
+  background: radial-gradient(closest-side, rgba(245, 43, 58, 0.55), rgba(142, 11, 22, 0.35) 45%, transparent 100%);
+  animation: driftA 22s var(--ease-in-out) infinite alternate;
+}
+.g2 {
+  width: 70vw;
+  height: 70vw;
+  right: -24vw;
+  top: -30vw;
+  background: radial-gradient(closest-side, rgba(142, 11, 22, 0.7), rgba(42, 2, 6, 0.5) 55%, transparent 100%);
+  animation: driftB 26s var(--ease-in-out) infinite alternate;
+}
+.g3 {
+  width: 46vw;
+  height: 46vw;
+  left: 38vw;
+  bottom: -26vw;
+  background: radial-gradient(closest-side, rgba(255, 90, 102, 0.32), transparent 100%);
+  animation: driftC 18s var(--ease-in-out) infinite alternate;
+}
+@keyframes driftA {
+  to {
+    transform: translate3d(18vw, -8vw, 0) scale(1.12);
+  }
+}
+@keyframes driftB {
+  to {
+    transform: translate3d(-14vw, 10vw, 0) scale(0.9);
+  }
+}
+@keyframes driftC {
+  to {
+    transform: translate3d(-22vw, -6vw, 0) scale(1.25);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(40px, 6vw, 120px);
+  align-items: start;
+}
+
+.copy {
+  position: sticky;
+  top: calc(var(--nav-h) + 6svh);
+  display: grid;
+  gap: 28px;
+  justify-items: start;
+}
+.title {
+  font-size: clamp(2.6rem, 1rem + 5vw, 6.4rem);
+  text-wrap: balance;
+}
+.channels {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 28px;
+  margin-top: 8px;
+}
+
+/* ---------- Panel del formulario ---------- */
+
+.panel {
+  --c: 28px;
+  --ring: polygon(
+    evenodd,
+    0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%, 0 0,
+    1px 1px, 1px calc(100% - 1px), calc(100% - 1px) calc(100% - 1px),
+    calc(100% - 1px) calc(var(--c) + 0.42px), calc(100% - var(--c) - 0.42px) 1px, 1px 1px
+  );
+  position: relative;
+  padding: clamp(26px, 3.4vw, 52px);
+  background: rgba(0, 0, 0, 0.62);
+  clip-path: polygon(0 0, calc(100% - var(--c)) 0, 100% var(--c), 100% 100%, 0 100%);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+/* Contorno que sigue también la esquina recortada */
+.panel::before,
+.panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  clip-path: var(--ring);
+}
+.panel::before {
+  background: var(--line-strong);
+}
+.panel::after {
+  background: var(--red);
+  opacity: 0;
+}
+.flash::after {
+  animation: flash 1400ms var(--ease-out);
+}
+@keyframes flash {
+  20% {
+    opacity: 1;
+  }
+}
+
+.form {
+  display: grid;
+  gap: 22px;
+}
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 22px;
+}
+
+.f {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.f > label:not(.check) {
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--bone);
+}
+.f > label span {
+  color: var(--steel);
+  font-weight: 400;
+}
+
+.f input:not([type="checkbox"]),
+.f textarea,
+.select select {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
+  background: rgba(242, 243, 245, 0.04);
+  border: 0;
+  border-radius: 0;
+  box-shadow: inset 0 -1px 0 var(--line-strong);
+  color: var(--bone);
+  transition: box-shadow 200ms ease, background-color 200ms ease;
+}
+.f textarea {
+  resize: vertical;
+  min-height: 140px;
+  line-height: 1.55;
+}
+.f input::placeholder,
+.f textarea::placeholder {
+  color: var(--steel);
+}
+.f input:not([type="checkbox"]):focus,
+.f textarea:focus,
+.select select:focus {
+  outline: none;
+  background: rgba(242, 243, 245, 0.07);
+  box-shadow: inset 0 -2px 0 var(--red-soft);
+}
+.f input:not([type="checkbox"]):focus-visible,
+.f textarea:focus-visible,
+.select select:focus-visible {
+  outline: none;
+}
+.f [aria-invalid="true"] {
+  box-shadow: inset 0 -2px 0 var(--red) !important;
+}
+
+.select {
+  position: relative;
+}
+.select select {
+  appearance: none;
+  padding-right: 44px;
+  cursor: pointer;
+}
+.select select option {
+  background: #0d0d0d;
+  color: var(--bone);
+}
+.select::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid var(--silver);
+  border-bottom: 1.5px solid var(--silver);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.err {
+  font-size: var(--fs-micro);
+  color: var(--red-soft);
+}
+
+/* ---------- Casilla propia ---------- */
+
+.check {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: var(--fs-small);
+  line-height: 1.5;
+  color: var(--silver);
+  cursor: pointer;
+}
+.check input {
+  position: absolute;
+  opacity: 0;
+  width: 20px;
+  height: 20px;
+  margin: 0;
+  cursor: pointer;
+}
+.box {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+  transition: background-color 160ms ease, box-shadow 160ms ease;
+}
+.box::after {
+  content: "";
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 11px;
+  border-right: 2px solid var(--void);
+  border-bottom: 2px solid var(--void);
+  transform: rotate(45deg) scale(0.6);
+  opacity: 0;
+  transition: transform 200ms var(--ease-out), opacity 120ms ease;
+}
+.check input:checked + .box {
+  background: var(--red);
+  box-shadow: inset 0 0 0 1px var(--red);
+}
+.check input:checked + .box::after {
+  opacity: 1;
+  transform: rotate(45deg) scale(1);
+}
+.check input:focus-visible + .box {
+  outline: 2px solid var(--red-soft);
+  outline-offset: 3px;
+}
+.check input[aria-invalid="true"] + .box {
+  box-shadow: inset 0 0 0 1px var(--red);
+}
+.check strong {
+  color: var(--bone);
+  font-weight: 500;
+}
+
+.legal {
+  font-size: var(--fs-micro);
+  line-height: 1.55;
+  color: var(--steel);
+  max-width: 60em;
+}
+
+/* ---------- Diagnóstico adjunto ---------- */
+
+.diag {
+  display: grid;
+  gap: 10px;
+  padding: 16px 18px;
+  background: rgba(245, 43, 58, 0.07);
+  box-shadow: inset 2px 0 0 var(--red);
+  animation: diagIn 500ms var(--ease-out) backwards;
+}
+@keyframes diagIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.details summary {
+  display: inline-block;
+  font-size: var(--fs-micro);
+  color: var(--silver);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: var(--line-strong);
+  list-style: none;
+}
+.details summary::-webkit-details-marker {
+  display: none;
+}
+.details pre {
+  margin: 12px 0 0;
+  max-height: 260px;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-family: inherit;
+  font-size: var(--fs-micro);
+  line-height: 1.6;
+  color: var(--silver);
+}
+
+/* ---------- Campo trampa ---------- */
+
+.hp {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+/* ---------- Envío ---------- */
+
+.submit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 24px;
+  padding-top: 6px;
+}
+.submit :global(.btn[disabled]) {
+  opacity: 0.6;
+  cursor: progress;
+}
+.formError {
+  flex: 1 1 260px;
+  font-size: var(--fs-small);
+  color: var(--bone);
+  padding-left: 14px;
+  box-shadow: inset 2px 0 0 var(--red);
+}
+.formError a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sent {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
+  padding-block: clamp(20px, 6vh, 64px);
+}
+.sentStar {
+  width: 44px;
+  height: 44px;
+  color: var(--red);
+  animation: starIn 900ms var(--ease-out) backwards;
+}
+@keyframes starIn {
+  from {
+    opacity: 0;
+    transform: rotate(-120deg) scale(0.6);
+  }
+}
+.sentTitle {
+  font-size: var(--fs-h3);
+  font-variation-settings: "wdth" 115;
+  font-weight: 420;
+}
+.sentText {
+  color: var(--silver);
+}
+.sentText strong {
+  color: var(--bone);
+  font-weight: 500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .field span {
+    animation: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .copy {
+    position: relative;
+    top: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .panel {
+    margin-inline: calc(var(--gutter) * -0.4);
+    padding: 24px 20px 28px;
+  }
+  .submit :global(.btn) {
+    width: 100%;
+  }
+  .g1 {
+    width: 160vw;
+    height: 160vw;
+    left: -60vw;
+    bottom: -90vw;
+  }
+  .g2 {
+    width: 130vw;
+    height: 130vw;
+    right: -60vw;
+    top: -50vw;
+  }
+}
